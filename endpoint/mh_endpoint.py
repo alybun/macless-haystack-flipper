@@ -137,18 +137,17 @@ class ServerHandler(BaseHTTPRequestHandler):
 
 
 def getAuth(regenerate=False, second_factor='sms'):
-    # if os.path.exists(config.getConfigFile()) and not regenerate:
-    #     with open(config.getConfigFile(), "r") as f:
-    #         j = json.load(f)
-    # else:
-    # macless-haystack-flipper - Always prompt for credentials
-    mobileme = pypush_gsa_icloud.icloud_login_mobileme(username=config.USER, password=config.PASS,
-                                                        second_factor=second_factor)
-    logger.debug('Mobileme result: ' + mobileme)
-    j = {'dsid': mobileme['dsid'], 'searchPartyToken': mobileme['delegates']
-            ['com.apple.mobileme']['service-data']['tokens']['searchPartyToken']}
-    with open(config.getConfigFile(), "w") as f:
-        json.dump(j, f)
+    if os.path.exists(config.getConfigFile()) and not regenerate:
+        with open(config.getConfigFile(), "r") as f:
+            j = json.load(f)
+    else:
+        mobileme = pypush_gsa_icloud.icloud_login_mobileme(username=config.USER, password=config.PASS,
+                                                           second_factor=second_factor)
+        logger.debug('Mobileme result: ' + mobileme)
+        j = {'dsid': mobileme['dsid'], 'searchPartyToken': mobileme['delegates']
+             ['com.apple.mobileme']['service-data']['tokens']['searchPartyToken']}
+        with open(config.getConfigFile(), "w") as f:
+            json.dump(j, f)
     return (j['dsid'], j['searchPartyToken'])
 
 
