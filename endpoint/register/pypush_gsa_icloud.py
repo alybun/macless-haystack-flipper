@@ -16,6 +16,95 @@ from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from Crypto.Hash import SHA256
 import config
+# macless-haystack-flipper - Imports
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import socketserver
+from urllib.parse import parse_qs
+import threading
+
+#
+# macless-haystack-flipper - Create HTTP server to handle credentials
+#
+
+form_html = """
+    <html><body>
+    <form method="post">
+    {inputs}
+    <input type="submit" value="Submit">
+    </form></body></html>
+"""
+
+class ServerHandler(BaseHTTPRequestHandler):
+    form_fields = ""
+
+    def _send_form(self, inputs):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(bytes(form_html.format(inputs=inputs), "utf-8"))
+
+    def do_GET(self):
+        self._send_form(self.form_fields)
+
+    def do_POST(self):
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        user_input = parse_qs(post_data.decode())
+        self.server.user_input = user_input  # Save the data in the server instance
+        self.send_response(302)
+        self.send_header('Location', '/thanks')
+        self.end_headers()
+
+    def log_message(self, format, *args):
+        return  # Suppress logging of GET and POST requests
+
+def start_server(form_fields):
+    handler = type('CustomHandler', (ServerHandler,), {"form_fields": form_fields})
+    server_address = ('', 6171)
+    httpd = HTTPServer(server_address, handler)
+
+    def server_thread():
+        httpd.serve_forever()
+
+    t = threading.Thread(target=server_thread)
+    t.daemon = True
+    t.start()
+    return httpd
+
+def shutdown_server(server):
+    server.shutdown()
+
+#
+# macless-haystack-flipper - Functions to get user input
+#
+
+def get_username():
+    form_fields = 'Apple ID: <input name="username" type="text"><br>'
+    server = start_server(form_fields)
+    while not hasattr(server, 'user_input'):
+        pass  # Wait until input is received
+    shutdown_server(server)
+    return server.user_input['username'][0]
+
+def get_password():
+    form_fields = 'Password: <input name="password" type="password"><br>'
+    server = start_server(form_fields)
+    while not hasattr(server, 'user_input'):
+        pass
+    shutdown_server(server)
+    return server.user_input['password'][0]
+
+def get_2fa_code():
+    form_fields = '2FA Code: <input name="code" type="text"><br>'
+    server = start_server(form_fields)
+    while not hasattr(server, 'user_input'):
+        pass
+    shutdown_server(server)
+    return server.user_input['code'][0]
+
+#
+#
+#
 
 # Created here so that it is consistent
 USER_ID = uuid.uuid4()
@@ -34,9 +123,11 @@ logger = logging.getLogger()
 
 def icloud_login_mobileme(username='', password='', second_factor='sms'):
     if not username:
-        username = input('Apple ID: ')
+        # username = input('Apple ID: ')
+        username = get_username() # macless-haystack-flipper - Replace with web prompt
     if not password:
-        password = getpass('Password: ')
+        # password = getpass('Password: ')
+        password = get_password() # macless-haystack-flipper - Replace with web prompt
     g = gsa_authenticate(username, password, second_factor)
     pet = g["t"]["com.apple.gs.idms.pet"]["token"]
     adsid = g["adsid"]
@@ -290,7 +381,8 @@ def sms_second_factor(dsid, idms_token):
         timeout=5
     )
     # Prompt for the 2FA code. It's just a string like '123456', no dashes or spaces
-    code = input("Enter 2FA code: ")
+    # code = input("Enter 2FA code: ")
+    code = get_2fa_code() # macless-haystack-flipper - Replace with web prompt
 
     body['securityCode'] = {'code': code}
 
