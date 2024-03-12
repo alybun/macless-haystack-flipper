@@ -32,7 +32,7 @@ These instructions have been customized for use with the Flipper Zero.
 - [Docker](https://www.docker.com/) installed
 - [Python3](https://www.python.org/) and [pip3](https://pypi.org/project/pip/) installed
 - Apple-ID with F2A (mobile or sms) enabled
-- Flipper Zero with MFW installed
+- Flipper Zero with [MFW](https://github.com/Next-Flip/Momentum-Firmware) installed
 
 ---
 
