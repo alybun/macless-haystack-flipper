@@ -60,7 +60,7 @@ class ServerHandler(BaseHTTPRequestHandler):
 
 def start_server(form_fields):
     handler = type('CustomHandler', (ServerHandler,), {"form_fields": form_fields})
-    server_address = ('', 6171)
+    server_address = ('', 6176)
     httpd = HTTPServer(server_address, handler)
 
     def server_thread():
