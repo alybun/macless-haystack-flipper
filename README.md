@@ -121,6 +121,10 @@ docker-compose up -d
 
 5. You will be asked for your Apple-ID, password and your 2FA.
 
+###### Your browser should redirect you through these prompts. If not, you may need to browse back to the server on port 6176 manually between them.
+
+###### It also seems that sometimes you will need to log in twice before the 2FA prompt arrives. Just keep browsing back to the main page on 6176, and filling in the requested prompts.
+
 6. Test the server by browsing to https://localhost:6176, you should see "Nothing to see here"
 
 ###### If the containers are restarted, you will need to re-authenticate using steps 4 - 6.
@@ -179,6 +183,7 @@ Included projects are (Credits goes to them for the hard work):
 - [acalatrava's OpenHaystack-Fimware alternative](https://github.com/acalatrava/openhaystack-firmware)
   - NRF5x firmware customization for battery optimization
 - [dchrist's macless-haystack](https://github.com/dchristl/macless-haystack)
+- [MatthewKuKanich's FindMyFlipper](https://github.com/MatthewKuKanich/FindMyFlipper)
 
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
