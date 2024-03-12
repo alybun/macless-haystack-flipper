@@ -1,130 +1,147 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/xcode,swift
-# Edit at https://www.toptal.com/developers/gitignore?templates=xcode,swift
-
-## macOS ## 
-
+# Operating System specific
 .DS_Store
+Thumbs.db
+Desktop.ini
 
-### Swift ###
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+# General Development Tools
+*.log
+*.tmp
+*.bak
+*.swp
+*.lock
 
-## User settings
-xcuserdata/
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+*.dylib
+*.lib
 
-## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
-*.xcscmblueprint
-*.xccheckout
+# Executable files
+*.exe
+*.out
+*.app
+*.apk
+*.jar
 
-## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+# Virtual Environments
+venv/
+env/
+.virtualenv/
+
+# Package directories
+node_modules/
+jspm_packages/
+bower_components/
+
+# Distribution / packaging
+.Python
 build/
-DerivedData/
-*.moved-aside
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
+dist/
+sdist/
+wheel/
+cache/
 
-## Obj-C/Swift specific
-*.hmap
+# PyInstaller
+*.manifest
+*.spec
 
-## App packaging
-*.ipa
-*.dSYM.zip
-*.dSYM
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
 
-# Swift Package Manager
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# Package.pins
-# Package.resolved
-# *.xcodeproj
-# Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
-# hence it is not needed unless you have added a package configuration file to your project
-# .swiftpm
+# Translations
+*.mo
+*.pot
 
-.build/
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
 
-# CocoaPods
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-# Pods/
-# Add this line if you want to avoid checking in source code from the Xcode workspace
-# *.xcworkspace
+# Flask stuff:
+instance/
+.webassets-cache
 
-# Carthage
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
+# Scrapy stuff:
+.scrapy
 
-Carthage/Build/
+# Sphinx documentation
+docs/_build/
 
-# Accio dependency management
-Dependencies/
-.accio/
+# PyBuilder
+target/
 
-# fastlane
-# It is recommended to not store the screenshots in the git repo.
-# Instead, use fastlane to re-generate the screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
+# Jupyter Notebook
+.ipynb_checkpoints
 
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
+# IPython
+.profile_default/
+ipython_config.py
 
-# Code Injection
-# After new code Injection tools there's a generated folder /iOSInjectionProject
-# https://github.com/johnno1962/injectionforxcode
+# environment variables
+.env
 
-iOSInjectionProject/
-
-### Xcode ###
-# Xcode
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
-
-
-
-## Gcc Patch
-/*.gcno
-
-### Xcode Patch ###
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcworkspace/contents.xcworkspacedata
-**/xcshareddata/WorkspaceSettings.xcsettings
-
-# End of https://www.toptal.com/developers/gitignore/api/xcode,swift
-
-# Exports folder 
-Exports/
-
-
-openssl/release
-
-**/output
-**/.pio
-**/.vscode
-**/.dart_tool
-**/*.code-workspace
-notes
-**/osx-serial-generator
-*.pyc
-
-
-firmware/nrf5x/_build
-firmware/nrf5x/compiled
-endpoint/data/*.json
+# Misc
+*.py[cod]
+__pycache__/
+*.class
+*.sln
+*.suo
+*.ntvs*
+*.njsproj
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.ds_store
+*.idea
+*.project
+*.settings
+*.tmproj
+*.esproj
+*.vbproj
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ilk
+*.map
+*.exp
+*.fdb_latexmk
+*.synctex.gz
+*.fls
+*.log
+*.aux
+*.out
+*.toc
+*.nav
+*.snm
+*.vrb
+*.dvi
+*.fdb_latexmk
+*.synctex(busy)
+*.synctex.gz(busy)
+*.blg
+*.brf
+*.cb
+*.ind
+*.idx
+*.ilg
+*.inx
+*.ps
+*.spl
+*.swp
+*.bbl
