@@ -52,7 +52,7 @@ class ServerHandler(BaseHTTPRequestHandler):
         user_input = parse_qs(post_data.decode())
         self.server.user_input = user_input  # Save the data in the server instance
         self.send_response(302)
-        self.send_header('Location', '/thanks')
+        self.send_header('Location', '/redirect')
         self.end_headers()
 
     def log_message(self, format, *args):

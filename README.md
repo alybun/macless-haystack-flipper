@@ -1,28 +1,18 @@
-# Macless-Haystack
+# Macless-Haystack-Flipper
 
-![last commit](https://img.shields.io/github/last-commit/dchristl/macless-haystack)
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-Info-blue)](https://hub.docker.com/r/christld/macless-haystack)
-[![Docker Pulls](https://img.shields.io/docker/pulls/christld/macless-haystack)](https://hub.docker.com/r/christld/macless-haystack)
-
-
-This project tries to unify several projects for an easy-to-use and easy-to-setup custom FindMy network. The goal is to run a FindMy network without the need to own a real Mac or virtual Mac. Also you don't have to install the mail plugin or openhaystack itself. (As needed by the original OpenHaystack project).
-
-<img src="images/dashboard_web.png" width="500" />
 
 ## Table of Contents
 
 - [Setup](#setup)
   - [Prerequisites](#prerequisites)
-  - [Hardware setup](#hardware-setup)
+  - [Flipper setup](#flipper-setup)
   - [Server setup](#server-setup)
   - [Frontend setup](#frontend-setup)
-- [Problems / Issues / Questions](#problems--issues--questions)
 - [Included projects and changes](#included-projects-and-changes)
-- [Screenshots](#screenshots)
 
 ## Setup
 
-In this section, you will find a step-by-step guide on how to set up your own Macless-Haystack network.
+In this section, you will find instructions that have been customized for the Flipper Zero and set up all of the macless-haystack containers locally.
 
 <details><summary>1. Prerequisites</summary>
 
@@ -31,56 +21,98 @@ In this section, you will find a step-by-step guide on how to set up your own Ma
 - [Docker](https://www.docker.com/) installed
 - [Python3](https://www.python.org/) and [pip3](https://pypi.org/project/pip/) installed
 - Apple-ID with F2A (mobile or sms) enabled
+- Flipper Zero with MFW installed
 
 ---
 
 </details>
 
-<details><summary>2. Hardware setup</summary>
+<details><summary>2. Flipper setup</summary>
 
-## Hardware setup
+## Flipper setup
 
-1. Head over to the [releases](https://github.com/dchristl/macless-haystack/releases/latest) section and download `generate_keys.py` and your needed firmware (ESP32 or NRF5x) zip file.
+1. Head over to the [FindMyFlipper](https://github.com/dchristl/macless-haystack/releases/latest) repo and download `generate_keys.py` from the KeyGeneration folder.
 
 2. Execute the `generate_keys.py` script to generate your keypair. (Note: dependency `cryptography` is needed. Install it with `pip install cryptography`)
 
-3. Unzip the firmware and flash it to your device (see [Install ESP32-firmware with your key](firmware/ESP32/README.md) or [Install NRF5x-firmware with your key](firmware/nrf5x/README.md))
+3. Follow the prompts and afterward you should have a .keys file generated in a keys subfolder.
 
-###### Note: In general, any OpenHaystack-compatible device or its firmware is also compatible with Macless-Haystack (i.e. [the ST17H66](https://github.com/biemster/FindMy/tree/main/Lenze_ST17H66)). Typically, only the Base64-encoded advertisement key is required, which can be found in the .keys file after key generation
+4. Put the .keys file onto the Flipper, inside the AppsData/FindMyFlipper folder. Alternatively, you can manually enter this information into the FindMyFlipper app.
+
+5. Open the FindMyFlipper app after starting the Flipper with the SD Card re-inserted.
+
+6. Press the right button to open the config menu, and then select "Import Tag From File".
+
+7. Select "OpenHaystack.keys" and then select the keys file.
+
+8. Start broadcasting using the FindMyFlipper app.
 
 ---
 
 </details>
 
-<details><summary>3. Server setup</summary>
+<details><summary>3. Server setup (Docker Hub)</summary>
 
 ## Server setup
 
-1. Create a new docker network
+0. Alternatively: You can build the containers yourself using the Dockerfile in "endpoint" to build "macless-haystack-flipper", and "web" to build "macless-flipper-web". To make set up easier, I have pre-built them and created a compose file to simplify this.
+
+1. Create a new Docker network
 
 ```bash
 docker network create mh-network
 ```
 
-2. Install [Anisette Server](https://github.com/Dadoum/anisette-v3-server):
+2. Create a working directory and make a file called "docker-compose.yml" with these contents:
 
-```bash
-docker run -d --restart always --name anisette -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ --network mh-network dadoum/anisette-v3-server
+```docker-compose.yml
+version: '3'
+services:
+  anisette:
+    image: dadoum/anisette-v3-server:latest
+    container_name: anisette
+    restart: unless-stopped
+    ports:
+      - "6969:6969"
+    networks:
+      - mh-network
+
+  macless-haystack:
+    image: sourcebunny/macless-haystack-flipper:latest
+    container_name: macless-haystack-flipper
+    restart: unless-stopped
+    ports:
+      - "6176:6176"
+    networks:
+      - mh-network
+
+  macless-haystack-web:
+    image: sourcebunny/macless-haystack-web:latest
+    container_name: macless-haystack-web
+    restart: unless-stopped
+    ports:
+      - "9443:443"
+    networks:
+      - mh-network
+
+networks:
+  mh-network:
+    external: true
 ```
 
-3. Start and set up your Macless Haystack endpoint in interactive mode:
+3. Start the Docker containers
 
 ```bash
-docker run -it --restart unless-stopped --name macless-haystack -p 6176:6176 --volume mh_data:/app/endpoint/data --network mh-network christld/macless-haystack
+docker-compose up -d
 ```
 
-###### You will be asked for your Apple-ID, password and your 2FA. If you see `serving at port 6176 over HTTP` you have all set up correctly
+4. Browse to your server on port 6176. For example, http://localhost:6176
 
-4. Restart your server now in background by restarting it in an other terminal
+5. You will be asked for your Apple-ID, password and your 2FA.
 
-```bash
-docker restart macless-haystack
-```
+6. Test the server by browsing to https://localhost:6176, you should see "Nothing to see here"
+
+###### If the containers are restarted, you will need to re-authenticate using steps 4 - 6.
 
 ---
 
@@ -90,20 +122,35 @@ docker restart macless-haystack
 
 ## Frontend setup
 
-You can either use the frontend provided by GitHub, host the webserver for yourself or use the Android application
+This repository includes a Dockerfile that hosts the web application locally.
 
-- *Optional*: Mobile: Install application
-- *Optional*: Host: Browse to [Github Page](https://dchristl.github.io/macless-haystack/) (s. [Notes on SSL usage](FAQ.md#how-can-i-use-ssl-if-the-endpoint-runs-on-another-machine-than-the-ui))
-- Import PREFIX_devices.json to your application
-- If you run the frontend not on the same machine as your endpoint, you have to configure your Url in the settings
+This should already be running if you started the included docker-compose.yml file, and you can follow the steps to get it working.
+
+1. Browse to your server with HTTPS on port 944. For example, https://localhost:9443
+
+2. Go to the settings, and correct the URL to match your server, on port 6176. For example, https://localhost:6176
+
+3. Press "OK", and return to the main page.
+
+4. Press the "+" button to add a new device.
+
+5. Select "Import Accessory".
+
+6. Pick any 7 digit ID number, and use it for the ID field. Other numbers and lengths may also work.
+
+7. Name the device based on your preference. This will be displayed within the page.
+
+8. Copy the Private Key from the ".keys" file you generated into the "Private Key (Base64)" field.
+
+9. Enable both the "Is Active" and "Is Deployed" checkboxes.
+
+10. Press the "Import" button.
+
+11. Press the "Refresh" button. If you don't see your device's location, try again after some time. You can also try moving closer to a device such as an Apple iPhone.
 
 ---
 
 </details>
-
-### Problems / Issues / Questions
-
-If you have any problems, issues or questions, please check the [FAQ](FAQ.md) first. If this doesn't help you, create a new issue.
 
 ## Included projects and changes
 
@@ -120,33 +167,8 @@ Included projects are (Credits goes to them for the hard work):
   - ESP32 firmware customization for battery optimization
 - [acalatrava's OpenHaystack-Fimware alternative](https://github.com/acalatrava/openhaystack-firmware)
   - NRF5x firmware customization for battery optimization
+- [dchrist's macless-haystack](https://github.com/dchristl/macless-haystack)
 
-## Screenshots
-
-<details><summary>Android App</summary>
-
-### Android
-
-![Dashboard](images/history_mobile.png)
-![Dashboard](images/history_mobile_2.png)
-![Dashboard](images/accessories_mobile.png)
-![Dashboard](images/settings_mobile.png)
-
-</details>
-
-<details><summary>Website</summary>
-
-### Web
-
-![Dashboard](images/history_web.png)
-![Dashboard](images/history_web_light.png)
-![Dashboard](images/accessories_web.png)
-
-</details>
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 

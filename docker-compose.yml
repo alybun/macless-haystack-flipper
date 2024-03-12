@@ -1,0 +1,32 @@
+version: '3'
+services:
+  anisette:
+    image: dadoum/anisette-v3-server:latest
+    container_name: anisette
+    restart: unless-stopped
+    ports:
+      - "6969:6969"
+    networks:
+      - mh-network
+
+  macless-haystack:
+    image: sourcebunny/macless-haystack-flipper:latest
+    container_name: macless-haystack-flipper
+    restart: unless-stopped
+    ports:
+      - "6176:6176"
+    networks:
+      - mh-network
+
+  macless-haystack-web:
+    image: sourcebunny/macless-haystack-web:latest
+    container_name: macless-haystack-web
+    restart: unless-stopped
+    ports:
+      - "9443:443"
+    networks:
+      - mh-network
+
+networks:
+  mh-network:
+    external: true
