@@ -333,7 +333,8 @@ def trusted_second_factor(dsid, idms_token):
     )
 
     # Prompt for the 2FA code. It's just a string like '123456', no dashes or spaces
-    code = getpass("Enter 2FA code: ")
+    #code = getpass("Enter 2FA code: ")
+    code = get_2fa_code() # macless-haystack-flipper - Replace with web prompt
     headers["security-code"] = code
 
     # Send the 2FA code to Apple
