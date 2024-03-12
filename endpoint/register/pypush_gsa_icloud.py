@@ -44,7 +44,27 @@ class ServerHandler(BaseHTTPRequestHandler):
         self.wfile.write(bytes(form_html.format(inputs=inputs), "utf-8"))
 
     def do_GET(self):
-        self._send_form(self.form_fields)
+        if self.path == '/':
+            self._send_form(self.form_fields)
+        elif self.path == '/redirect':
+            self._send_redirect()
+        elif self.path == '/finish':
+            self._send_finish()
+
+    def _send_redirect(self):
+        message = "Please wait, preparing the next prompt..."
+        refresh_header = '<meta http-equiv="refresh" content="8;url=/" />'
+        self._send_response(f'<html><head>{refresh_header}</head><body>{message}</body></html>')
+
+    def _send_finish(self):
+        message = "Login process complete. You can close this window."
+        self._send_response(f'<html><body>{message}</body></html>')
+
+    def _send_response(self, content):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(bytes(content, "utf-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
