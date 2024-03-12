@@ -1,5 +1,16 @@
 # Macless-Haystack-Flipper
 
+The goal of this project is to create a method that allows users of the Flipper Zero to easily set up macless-haystack locally, for use with the FindMyFlipper app.
+
+Functionally, this is primarily a fork of the endpoint container provided by macless-hackstack.
+
+The major change in that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode.
+
+I made this change, because users of the Flipper Zero have reported that the server doesn't work to query the device properly after the container is restarted. Instead, the container provided from this project will prompt for authentication each time it starts.
+
+Keep in mind, the credentials are sent to your local server in plain text from your browser. As such, you should only authenticate within your local machine, or inside of a network that you trust.
+
+I also created a Dockerfile to run the web application from macless-haystack locally, as some Flipper Zero users have had trouble with the app publically hosted on the web.
 
 ## Table of Contents
 
@@ -12,7 +23,7 @@
 
 ## Setup
 
-In this section, you will find instructions that have been customized for the Flipper Zero and set up all of the macless-haystack containers locally.
+These instructions have been customized for use with the Flipper Zero.
 
 <details><summary>1. Prerequisites</summary>
 
@@ -126,7 +137,7 @@ This repository includes a Dockerfile that hosts the web application locally.
 
 This should already be running if you started the included docker-compose.yml file, and you can follow the steps to get it working.
 
-1. Browse to your server with HTTPS on port 944. For example, https://localhost:9443
+1. Browse to your server with HTTPS on port 9443. For example, https://localhost:9443
 
 2. Go to the settings, and correct the URL to match your server, on port 6176. For example, https://localhost:6176
 
@@ -171,6 +182,7 @@ Included projects are (Credits goes to them for the hard work):
 
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 
 ## Disclaimer
 
