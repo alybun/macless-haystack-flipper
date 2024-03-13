@@ -52,7 +52,9 @@ class ServerHandler(BaseHTTPRequestHandler):
             self._send_finish()
 
     def _send_redirect(self):
-        message = "Please wait, preparing the next prompt..."
+        host = self.headers['Host'] if 'Host' in self.headers else "localhost:6176"
+        message = f"""Please wait, preparing the next prompt.
+If the page does not reload, wait 10 seconds. Then browse to <a href="http://{host}">http://{host}</a> in a new tab."""
         refresh_header = '<meta http-equiv="refresh" content="8;url=/" />'
         self._send_response(f'<html><head>{refresh_header}</head><body>{message}</body></html>')
 
