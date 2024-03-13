@@ -75,7 +75,7 @@ python3 generate_keys.py
 
 </details>
 
-<details><summary>3. Server setup (Docker Hub)</summary>
+<details><summary>3. Server setup</summary>
 
 ## Server setup
 
