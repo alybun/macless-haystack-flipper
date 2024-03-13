@@ -4,9 +4,11 @@ The goal of this project is to create a method that allows users of the Flipper 
 
 Functionally, this is primarily a fork of the endpoint container provided by macless-hackstack.
 
-The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode. Instead, this is done through the web.
+The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode. Instead, this is done through the web, to make it easier to authenticate when the container starts.
 
-I made this change, because users of the Flipper Zero have reported that the server doesn't work to query the device properly after the container is restarted. Instead, the container provided from this project will prompt for authentication each time it starts.
+I made this change, because some users of the Flipper Zero have reported that the server doesn't work to query the device properly after the container is restarted.
+
+When using the provided compose file, the endpoint container from this project will prompt for authentication each time it starts. This is how it has been used in testing. When using a volume, it should keep credentials persistent the same way that the original macless-haystack container does, if you prefer that.
 
 Keep in mind, the credentials are sent to your local server in plain text from your browser. As such, you should only authenticate within your local machine, or inside of a network that you trust.
 
