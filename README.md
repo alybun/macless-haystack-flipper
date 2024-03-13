@@ -36,6 +36,12 @@ These instructions have been customized for use with the Flipper Zero.
 - Apple-ID with F2A (mobile or sms) enabled
 - Flipper Zero with [MFW](https://github.com/Next-Flip/Momentum-Firmware) installed
 
+
+[Instructions to install Docker](https://docs.docker.com/engine/install/)
+
+[Instructions to install Python](https://www.pythontutorial.net/getting-started/install-python/)
+
+
 ---
 
 </details>
@@ -47,6 +53,11 @@ These instructions have been customized for use with the Flipper Zero.
 1. Head over to the [FindMyFlipper](https://github.com/dchristl/macless-haystack/releases/latest) repo and download `generate_keys.py` from the KeyGeneration folder.
 
 2. Execute the `generate_keys.py` script to generate your keypair. (Note: dependency `cryptography` is needed. Install it with `pip install cryptography`)
+
+```bash
+pip install cryptography
+python3 generate_keys.py
+```
 
 3. Follow the prompts and afterward you should have a .keys file generated in a keys subfolder.
 
@@ -68,7 +79,13 @@ These instructions have been customized for use with the Flipper Zero.
 
 ## Server setup
 
-0. Alternatively: You can build the containers yourself using the Dockerfile in "endpoint" to build "macless-haystack-flipper", and "web" to build "macless-flipper-web". To make set up easier, I have pre-built them and created a compose file to simplify this.
+To make set up easier, I have pre-built the containers and created a compose file to simplify the process. Follow the "Docker Hub" steps if you want to use the pre-built containers.
+
+You can also build the containers yourself using the Dockerfile in "endpoint" to build "macless-haystack-flipper", and "web" to build "macless-flipper-web". Follow the "Building It Yourself" steps if you want to do so.
+
+Choose either the "Docker Hub" or "Building It Yourself" for the next steps.
+
+### Docker Hub (Pre-Built)
 
 1. Create a new Docker network
 
@@ -76,7 +93,7 @@ These instructions have been customized for use with the Flipper Zero.
 docker network create mh-network
 ```
 
-2. Create a working directory and make a file called "docker-compose.yml" with these contents:
+2. Create a working directory and make a file inside called "docker-compose.yml" with these contents:
 
 ```docker-compose.yml
 version: '3'
@@ -113,7 +130,7 @@ networks:
     external: true
 ```
 
-3. Start the Docker containers
+3. Start the Docker containers (run inside your working directory with the docker-compose.yml file)
 
 ```bash
 docker-compose up -d
@@ -130,6 +147,91 @@ docker-compose up -d
 6. Test the server by browsing to https://localhost:6176, you should see "Nothing to see here"
 
 ###### If the containers are restarted, you will need to re-authenticate using steps 4 - 6.
+
+
+### Building It Yourself (Advanced)
+
+1. Clone or download the respository files
+
+```bash
+git clone https://github.com/sourcebunny/macless-haystack-flipper.git
+```
+
+2. Create a new Docker network
+
+```bash
+docker network create mh-network
+```
+
+3. Navigate to the project's "endpoint" directory and build the Docker image for the "macless-haystack-flipper" service:
+
+```bash
+cd macless-haystack-flipper/endpoint
+docker build -t local/macless-haystack-flipper:latest .
+```
+
+4. Navigate to the project's "web" directory and build the Docker image for the "macless-haystack-web" service:
+
+```bash
+cd macless-haystack-flipper/web
+docker build -t local/macless-haystack-web:latest .
+```
+
+5. Create a working directory outside of the downloaded repo and make a file inside called "docker-compose.yml" with these contents:
+
+```docker-compose.yml
+version: '3'
+services:
+  anisette:
+    image: dadoum/anisette-v3-server:latest
+    container_name: anisette
+    restart: unless-stopped
+    ports:
+      - "6969:6969"
+    networks:
+      - mh-network
+
+  macless-haystack-flipper:
+    image: local/macless-haystack-flipper:latest
+    container_name: macless-haystack-flipper
+    restart: unless-stopped
+    ports:
+      - "6176:6176"
+    networks:
+      - mh-network
+
+  macless-haystack-web:
+    image: local/macless-haystack-web:latest
+    container_name: macless-haystack-web
+    restart: unless-stopped
+    ports:
+      - "9443:443"
+    networks:
+      - mh-network
+
+networks:
+  mh-network:
+    external: true
+```
+
+6. Start the Docker containers (run inside your working directory with the docker-compose.yml file)
+
+```bash
+docker-compose up -d
+```
+
+7. Browse to your server on port 6176. For example, http://localhost:6176
+
+8. You will be asked for your Apple-ID, password and your 2FA.
+
+###### Your browser should redirect you through these prompts. If not, you may need to browse back to the server on port 6176 manually between them.
+
+###### It also seems that sometimes you will need to log in twice before the 2FA prompt arrives. Just keep browsing back to the main page on 6176, and filling in the requested prompts.
+
+6. Test the server by browsing to https://localhost:6176, you should see "Nothing to see here"
+
+###### If the containers are restarted, you will need to re-authenticate using steps 4 - 6.
+
 
 ---
 
