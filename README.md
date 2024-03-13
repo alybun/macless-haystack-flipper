@@ -8,15 +8,19 @@ The goal of this project is to create a method that allows users of the Flipper 
 
 Functionally, this is primarily a fork of the endpoint container provided by macless-hackstack.
 
-The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode. Instead, this is done through the web, to make it easier to authenticate when the container starts. This way, you can simply authenticate through your browser and keep the container running without stopping it.
+The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode.
 
-I made this change, because some users of the Flipper Zero have reported that the server doesn't work to query the device properly after the container is restarted.
+Instead, this is done through the web, to make it easier to authenticate when the container starts. This way, you can simply authenticate through your browser and keep the container running without stopping it.
+
+I also created a Dockerfile to run the web application from macless-haystack locally, as some Flipper Zero users have had trouble with the app publically hosted on the web. It uses HTTPS by default.
+
+### Motivation
+
+I made the changes to the endpoint container, because some users of the Flipper Zero have reported that the server doesn't work to query the device properly after the container is restarted.
 
 When using the provided compose file, the endpoint container from this project will prompt for authentication each time it starts. This is how it has been used in testing. When using a volume, it should keep credentials persistent the same way that the original macless-haystack container does, if you prefer that.
 
 Keep in mind, the credentials are sent to your local server in plain text from your browser. As such, you should only authenticate within your local machine, or inside of a network that you trust.
-
-I also created a Dockerfile to run the web application from macless-haystack locally, as some Flipper Zero users have had trouble with the app publically hosted on the web.
 
 ## Table of Contents
 
