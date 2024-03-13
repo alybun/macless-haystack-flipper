@@ -150,7 +150,7 @@ docker-compose up -d
 
 
 
-#### Option 2.) Building It Yourself (Advanced)
+### Option 2.) Building It Yourself (Advanced)
 
 1. Clone or download the respository files
 
