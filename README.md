@@ -2,6 +2,8 @@
 
 The goal of this project is to create a method that allows users of the Flipper Zero to easily set up macless-haystack locally, for use with the FindMyFlipper app.
 
+### Details
+
 Functionally, this is primarily a fork of the endpoint container provided by macless-hackstack.
 
 The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode. Instead, this is done through the web, to make it easier to authenticate when the container starts. This way, you can simply authenticate through your browser and keep the container running without stopping it.
