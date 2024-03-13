@@ -8,7 +8,7 @@ The goal of this project is to create a method that allows users of the Flipper 
 
 Functionally, this is primarily a fork of the endpoint container provided by macless-hackstack.
 
-The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode.
+The major change to that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode.
 
 Instead, this is done through the web, to make it easier to authenticate when the container starts. This way, you can simply authenticate through your browser and keep the container running without stopping it.
 
@@ -103,7 +103,7 @@ Choose either the "Docker Hub" or "Building It Yourself" for the next steps.
 docker network create mh-network
 ```
 
-2. Create a working directory and make a file inside called "docker-compose.yml" with these contents:
+2. Create a working directory and make a file inside called "docker-compose.yml" with these contents
 
 ```docker-compose.yml
 version: '3'
@@ -174,21 +174,21 @@ git clone https://github.com/sourcebunny/macless-haystack-flipper.git
 docker network create mh-network
 ```
 
-3. Navigate to the project's "endpoint" directory and build the Docker image for the "macless-haystack-flipper" service:
+3. Navigate to the project's "endpoint" directory and build the Docker image for the "macless-haystack-flipper" service
 
 ```bash
 cd macless-haystack-flipper/endpoint
 docker build -t local/macless-haystack-flipper:latest .
 ```
 
-4. Navigate to the project's "web" directory and build the Docker image for the "macless-haystack-web" service:
+4. Navigate to the project's "web" directory and build the Docker image for the "macless-haystack-web" service
 
 ```bash
 cd macless-haystack-flipper/web
 docker build -t local/macless-haystack-web:latest .
 ```
 
-5. Create a working directory outside of the downloaded repo and make a file inside called "docker-compose.yml" with these contents:
+5. Create a working directory outside of the downloaded repo and make a file inside called "docker-compose.yml" with these contents
 
 ```docker-compose.yml
 version: '3'
@@ -266,7 +266,7 @@ This should already be running if you started the included docker-compose.yml fi
 
 5. Select "Import Accessory".
 
-6. Pick any 7 digit ID number, and use it for the ID field. Other numbers and lengths may also work.
+6. Pick any unique 7 digit ID number, and use it for the ID field. Other numbers and lengths may also work.
 
 7. Name the device based on your preference. This will be displayed within the page.
 
