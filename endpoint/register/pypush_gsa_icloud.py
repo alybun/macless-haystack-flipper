@@ -56,10 +56,6 @@ class ServerHandler(BaseHTTPRequestHandler):
         refresh_header = '<meta http-equiv="refresh" content="8;url=/" />'
         self._send_response(f'<html><head>{refresh_header}</head><body>{message}</body></html>')
 
-    def _send_finish(self):
-        message = "Login process complete. You can close this window."
-        self._send_response(f'<html><body>{message}</body></html>')
-
     def _send_response(self, content):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
