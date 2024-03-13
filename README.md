@@ -12,7 +12,9 @@ The major change is that container is that the Username, Password, and MFA code 
 
 Instead, this is done through the web, to make it easier to authenticate when the container starts. This way, you can simply authenticate through your browser and keep the container running without stopping it.
 
-I also created a Dockerfile to run the web application from macless-haystack locally, as some Flipper Zero users have had trouble with the app publically hosted on the web. It uses HTTPS by default.
+I have also pre-enabled the certificate included with the macless-haystack container, so it uses HTTPS by default after authentication has completed.
+
+I also created a Dockerfile to run the web application from macless-haystack locally, as some Flipper Zero users have had trouble with the app publically hosted on the web. The web application container also uses HTTPS by default.
 
 ### Motivation
 
