@@ -1,5 +1,7 @@
 # Macless-Haystack-Flipper
 
+<img src="images/header.png" width="500" />
+
 The goal of this project is to create a method that allows users of the Flipper Zero to easily set up macless-haystack locally, for use with the FindMyFlipper app.
 
 ### Details
