@@ -4,7 +4,7 @@ The goal of this project is to create a method that allows users of the Flipper 
 
 Functionally, this is primarily a fork of the endpoint container provided by macless-hackstack.
 
-The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode. Instead, this is done through the web, to make it easier to authenticate when the container starts.
+The major change is that container is that the Username, Password, and MFA code requested for the Apple account are no longer input from the terminal in interactive mode. Instead, this is done through the web, to make it easier to authenticate when the container starts. This way, you can simply authenticate through your browser and keep the container running without stopping it.
 
 I made this change, because some users of the Flipper Zero have reported that the server doesn't work to query the device properly after the container is restarted.
 
@@ -85,7 +85,7 @@ You can also build the containers yourself using the Dockerfile in "endpoint" to
 
 Choose either the "Docker Hub" or "Building It Yourself" for the next steps.
 
-### Docker Hub (Pre-Built)
+<details><summary>### Docker Hub (Pre-Built)</summary>
 
 1. Create a new Docker network
 
@@ -148,6 +148,9 @@ docker-compose up -d
 
 ###### If the containers are restarted, you will need to re-authenticate using steps 4 - 6.
 
+---
+
+</details>
 
 ### Building It Yourself (Advanced)
 
