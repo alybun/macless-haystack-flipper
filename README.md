@@ -85,7 +85,7 @@ You can also build the containers yourself using the Dockerfile in "endpoint" to
 
 Choose either the "Docker Hub" or "Building It Yourself" for the next steps.
 
-<details><summary>### Docker Hub (Pre-Built)</summary>
+<details>### Docker Hub (Pre-Built)
 
 1. Create a new Docker network
 
