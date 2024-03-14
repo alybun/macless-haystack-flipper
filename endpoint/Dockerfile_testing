@@ -10,7 +10,7 @@ RUN git init
 RUN git remote add origin https://github.com/sourcebunny/macless-haystack-flipper.git
 RUN git config core.sparseCheckout true
 RUN echo "endpoint" >> .git/info/sparse-checkout
-RUN git pull origin main
+RUN git pull origin testing
 RUN git checkout testing
 # Configure python
 RUN pip install --upgrade pip
