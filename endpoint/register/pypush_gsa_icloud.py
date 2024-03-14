@@ -55,7 +55,7 @@ class ServerHandler(BaseHTTPRequestHandler):
         host = self.headers['Host'] if 'Host' in self.headers else "localhost:6176"
         message = f"""Please wait, preparing the next prompt.
 If the page does not reload, wait 10 seconds. Then browse to <a href="http://{host}">http://{host}</a> in a new tab."""
-        refresh_header = '<meta http-equiv="refresh" content="8;url=/" />'
+        refresh_header = '<meta http-equiv="refresh" content="5;url=/" />'
         self._send_response(f'<html><head>{refresh_header}</head><body>{message}</body></html>')
 
     def _send_response(self, content):
@@ -364,7 +364,7 @@ def trusted_second_factor(dsid, idms_token):
         timeout=10,
     )
     if resp.ok:
-        logger.info("2FA successful via trusted device")
+        logger.info("2FA code from trusted device sent successfully")
 
 
 def sms_second_factor(dsid, idms_token):
@@ -416,4 +416,4 @@ def sms_second_factor(dsid, idms_token):
         timeout=5,
     )
     if resp.ok:
-        logger.info("2FA successful via SMS")
+        logger.info("2FA code from SMS sent successfully")
