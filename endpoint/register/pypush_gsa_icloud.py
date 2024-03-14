@@ -352,6 +352,7 @@ def trusted_second_factor(dsid, idms_token):
 
     # Prompt for the 2FA code. It's just a string like '123456', no dashes or spaces
     #code = getpass("Enter 2FA code: ")
+    logger.info("prompting for 2FA from user via trusted device")
     code = get_2fa_code() # macless-haystack-flipper - Replace with web prompt
     headers["security-code"] = code
 
@@ -401,6 +402,7 @@ def sms_second_factor(dsid, idms_token):
     )
     # Prompt for the 2FA code. It's just a string like '123456', no dashes or spaces
     # code = input("Enter 2FA code: ")
+    logger.info("prompting for 2FA from user via SMS")
     code = get_2fa_code() # macless-haystack-flipper - Replace with web prompt
 
     body['securityCode'] = {'code': code}
