@@ -235,6 +235,7 @@ def gsa_authenticate(username, password, second_factor='sms'):
                 spd[k] = base64.b64encode(v).decode()
         if second_factor == 'sms':
             sms_second_factor(spd["adsid"], spd["GsIdmsToken"])
+            return
         elif second_factor == 'trusted_device':
             trusted_second_factor(spd["adsid"], spd["GsIdmsToken"])
             return
