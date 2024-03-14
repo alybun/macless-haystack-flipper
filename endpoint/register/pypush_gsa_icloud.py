@@ -363,7 +363,7 @@ def trusted_second_factor(dsid, idms_token):
         timeout=10,
     )
     if resp.ok:
-        logger.info("2FA successful")
+        logger.info("2FA successful via trusted device")
 
 
 def sms_second_factor(dsid, idms_token):
@@ -414,4 +414,4 @@ def sms_second_factor(dsid, idms_token):
         timeout=5,
     )
     if resp.ok:
-        logger.info("2FA successful")
+        logger.info("2FA successful via SMS")

@@ -9,7 +9,7 @@ services:
     networks:
       - mh-network
 
-  macless-haystack:
+  macless-haystack-flipper:
     image: sourcebunny/macless-haystack-flipper:latest
     container_name: macless-haystack-flipper
     restart: unless-stopped
