@@ -120,6 +120,18 @@ def get_2fa_code():
     shutdown_server(server)
     return server.user_input['code'][0]
 
+def get_2fa_method():
+    form_fields = '''
+        Choose 2FA Method:<br>
+        <input type="radio" name="method" value="sms"> SMS<br>
+        <input type="radio" name="method" value="trusted_device"> Trusted Device<br>
+    '''
+    server = start_server(form_fields)
+    while not hasattr(server, 'user_input'):
+        pass
+    shutdown_server(server)
+    return server.user_input['method'][0]
+
 #
 #
 #
@@ -146,6 +158,7 @@ def icloud_login_mobileme(username='', password='', second_factor='sms'):
     if not password:
         # password = getpass('Password: ')
         password = get_password() # macless-haystack-flipper - Replace with web prompt
+    second_factor = get_2fa_method() # macless-haystack-flipper - Prompt the user to choose between 2FA methods
     g = gsa_authenticate(username, password, second_factor)
     pet = g["t"]["com.apple.gs.idms.pet"]["token"]
     adsid = g["adsid"]
