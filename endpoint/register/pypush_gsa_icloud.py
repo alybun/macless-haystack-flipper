@@ -151,7 +151,7 @@ urllib3.disable_warnings()
 logger = logging.getLogger()
 
 
-def icloud_login_mobileme(username='', password='', second_factor='sms'):
+def icloud_login_mobileme(username='', password='', second_factor=''):
     if not username:
         # username = input('Apple ID: ')
         username = get_username() # macless-haystack-flipper - Replace with web prompt
@@ -187,7 +187,7 @@ def icloud_login_mobileme(username='', password='', second_factor='sms'):
     return plist.loads(r.content)
 
 
-def gsa_authenticate(username, password, second_factor='sms'):
+def gsa_authenticate(username, password, second_factor):
     # Password is None as we'll provide it later
     usr = srp.User(username, bytes(), hash_alg=srp.SHA256, ng_type=srp.NG_2048)
     _, A = usr.start_authentication()
@@ -235,11 +235,9 @@ def gsa_authenticate(username, password, second_factor='sms'):
                 spd[k] = base64.b64encode(v).decode()
         if second_factor == 'sms':
             sms_second_factor(spd["adsid"], spd["GsIdmsToken"])
-            return
         elif second_factor == 'trusted_device':
             trusted_second_factor(spd["adsid"], spd["GsIdmsToken"])
-            return
-        return gsa_authenticate(username, password, second_factor)
+        return gsa_authenticate(username, password, "")
     elif "au" in r["Status"]:
         logger.error(f"Unknown auth value {r['Status']['au']}")
         return
