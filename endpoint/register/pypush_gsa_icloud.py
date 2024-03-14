@@ -237,7 +237,7 @@ def gsa_authenticate(username, password, second_factor):
             sms_second_factor(spd["adsid"], spd["GsIdmsToken"])
         elif second_factor == 'trusted_device':
             trusted_second_factor(spd["adsid"], spd["GsIdmsToken"])
-        return gsa_authenticate(username, password)
+        return gsa_authenticate(username, password, second_factor)
     elif "au" in r["Status"]:
         logger.error(f"Unknown auth value {r['Status']['au']}")
         return
