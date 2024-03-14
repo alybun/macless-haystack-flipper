@@ -151,7 +151,7 @@ urllib3.disable_warnings()
 logger = logging.getLogger()
 
 
-def icloud_login_mobileme(username='', password='', second_factor):
+def icloud_login_mobileme(username='', password='', second_factor=''):
     if not username:
         # username = input('Apple ID: ')
         username = get_username() # macless-haystack-flipper - Replace with web prompt
