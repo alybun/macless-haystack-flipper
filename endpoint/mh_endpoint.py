@@ -138,14 +138,11 @@ class ServerHandler(BaseHTTPRequestHandler):
 
 def getAuth(regenerate=False):
 
-    second_factor = config.getSecondFactor()
-
     if os.path.exists(config.getConfigFile()) and not regenerate:
         with open(config.getConfigFile(), "r") as f:
             j = json.load(f)
     else:
-        mobileme = pypush_gsa_icloud.icloud_login_mobileme(username=config.USER, password=config.PASS,
-                                                           second_factor=second_factor)
+        mobileme = pypush_gsa_icloud.icloud_login_mobileme(username=config.getUser(), password=config.getPass(), second_factor=config.getSecondFactor())
         logger.debug('Mobileme result: ' + mobileme)
         j = {'dsid': mobileme['dsid'], 'searchPartyToken': mobileme['delegates']
              ['com.apple.mobileme']['service-data']['tokens']['searchPartyToken']}

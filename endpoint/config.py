@@ -54,7 +54,7 @@ def getLogLevel():
     return logging.getLevelName(logLevel)
 
 def getSecondFactor():
-    return config.get('Settings', 'second_factor', fallback='sms')
+    return config.get('Settings', 'second_factor', fallback=None)
 
 
 logging.basicConfig(level=getLogLevel(),

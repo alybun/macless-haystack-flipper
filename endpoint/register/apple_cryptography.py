@@ -43,14 +43,12 @@ def decode_tag(data):
 
 def getAuth(regenerate=False):
 
-    second_factor = config.getSecondFactor()
-
     if os.path.exists(config.getConfigFile()) and not regenerate:
         with open(config.getConfigFile(), "r") as f:
             j = json.load(f)
     else:
         mobileme = icloud_login_mobileme(
-            username=config.getUser(), password=config.getPass(), second_factor=second_factor)
+            username=config.getUser(), password=config.getPass(), second_factor=config.getSecondFactor())
 
         logger.debug('Answer from icloud login')
         logger.debug(mobileme)
