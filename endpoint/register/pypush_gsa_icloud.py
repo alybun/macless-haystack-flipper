@@ -188,7 +188,10 @@ def icloud_login_mobileme(username='', password='', second_factor=''):
     return plist.loads(r.content)
 
 
-def gsa_authenticate(username, password, second_factor):
+def gsa_authenticate(username, password, second_factor, attempt=1):
+    max_attempts = 3  # Set a maximum number of retry attempts
+    sleep_time = 3  # Seconds to wait before retrying
+
     # Password is None as we'll provide it later
     usr = srp.User(username, bytes(), hash_alg=srp.SHA256, ng_type=srp.NG_2048)
     _, A = usr.start_authentication()
@@ -196,7 +199,16 @@ def gsa_authenticate(username, password, second_factor):
     r = gsa_authenticated_request(
         {"A2k": A, "ps": ["s2k", "s2k_fo"], "u": username, "o": "init"})
 
-    if r["sp"] != "s2k":
+    if r["sp"] == "s2k_fo":
+        logger.warn(f"Server returned unsupported policy {r['sp']}. Attempt {attempt} of {max_attempts}.")
+        if attempt < max_attempts:
+            time.sleep(sleep_time)  # Wait before retrying
+            return gsa_authenticate(username, password, second_factor, attempt + 1)  # Retry with incremented attempt count
+        else:
+            logger.error("Maximum retry attempts reached. Unable to proceed.")
+            return
+
+    elif r["sp"] != "s2k":
         logger.warn(
             f"This implementation only supports s2k. Server returned {r['sp']}")
         return
