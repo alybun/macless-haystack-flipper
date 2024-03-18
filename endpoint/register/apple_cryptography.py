@@ -41,7 +41,10 @@ def decode_tag(data):
     return {'lat': latitude, 'lon': longitude, 'conf': confidence, 'status': status}
 
 
-def getAuth(regenerate=False, second_factor='sms'):
+def getAuth(regenerate=False):
+
+    second_factor = config.getSecondFactor()
+
     if os.path.exists(config.getConfigFile()) and not regenerate:
         with open(config.getConfigFile(), "r") as f:
             j = json.load(f)
@@ -73,4 +76,5 @@ def getAuth(regenerate=False, second_factor='sms'):
 def registerDevice():
 
     logger.info(f'Trying to register new device.')
-    getAuth(regenerate=True, second_factor='trusted_device' 'sms')
+
+    getAuth(regenerate=True)

@@ -53,6 +53,9 @@ def getLogLevel():
     logLevel = config.get('Settings', 'loglevel', fallback='INFO')
     return logging.getLevelName(logLevel)
 
+def getSecondFactor():
+    return config.get('Settings', 'second_factor', fallback='sms')
+
 
 logging.basicConfig(level=getLogLevel(),
                     format='%(asctime)s - %(levelname)s - %(message)s')

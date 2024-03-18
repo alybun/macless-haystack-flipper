@@ -158,7 +158,8 @@ def icloud_login_mobileme(username='', password='', second_factor=''):
     if not password:
         # password = getpass('Password: ')
         password = get_password() # macless-haystack-flipper - Replace with web prompt
-    second_factor = get_2fa_method() # macless-haystack-flipper - Prompt the user to choose between 2FA methods
+    if not second_factor:
+        second_factor = get_2fa_method() # macless-haystack-flipper - Prompt the user to choose between 2FA methods
     g = gsa_authenticate(username, password, second_factor)
     pet = g["t"]["com.apple.gs.idms.pet"]["token"]
     adsid = g["adsid"]

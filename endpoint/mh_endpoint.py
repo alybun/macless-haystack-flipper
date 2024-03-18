@@ -95,7 +95,7 @@ class ServerHandler(BaseHTTPRequestHandler):
             {"startDate": 1, "ids": list(body['ids'])}]}
 
         try:
-            r = requests.post("https://gateway.icloud.com/acsnservice/fetch",  auth=getAuth(regenerate=False, second_factor='sms'),
+            r = requests.post("https://gateway.icloud.com/acsnservice/fetch",  auth=getAuth(regenerate=False),
                               headers=pypush_gsa_icloud.generate_anisette_headers(),
                               json=data)
             logger.debug('Return from fetch service:')
@@ -136,7 +136,10 @@ class ServerHandler(BaseHTTPRequestHandler):
         return clientTime, time.tzname[1], clientTimestamp
 
 
-def getAuth(regenerate=False, second_factor='sms'):
+def getAuth(regenerate=False):
+
+    second_factor = config.getSecondFactor()
+
     if os.path.exists(config.getConfigFile()) and not regenerate:
         with open(config.getConfigFile(), "r") as f:
             j = json.load(f)
